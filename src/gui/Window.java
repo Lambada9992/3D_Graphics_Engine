@@ -9,7 +9,7 @@ public class Window extends JFrame {
     public Window(String title) throws HeadlessException {
         super(title);
         this.title = title;
+        this.setSize(850,850);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
     }
 }

@@ -1,1 +1,3 @@
+#models/Teepot.obj
 models/Cube.obj
+models/Cube1.obj

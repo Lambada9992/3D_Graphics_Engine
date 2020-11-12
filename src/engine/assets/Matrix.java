@@ -15,21 +15,36 @@ public class Matrix {
         this.matrix = matrix;
     }
 
+    public Matrix(Matrix object){
+        matrix = object.getMatrix();
+    }
+
+    public static double[][] scaleMatrix(double scale){
+        double[][] matrix ={
+                {scale,0,0,0},
+                {0,scale,0,0},
+                {0,0,scale,0},
+                {0,0,0,1}
+        };
+
+        return matrix;
+    }
+
     public static double[][] identityMatrix(){
         double[][] matrix ={
-                {1,1,1,1},
-                {1,1,1,1},
-                {1,1,1,1},
-                {1,1,1,1}
+                {1,0,0,0},
+                {0,1,0,0},
+                {0,0,1,0},
+                {0,0,0,1}
         };
         return matrix;
     }
     public static double[][] translationMatrix(double x,double y,double z){
         double[][] matrix ={
-                {1,1,1,x},
-                {1,1,1,y},
-                {1,1,1,z},
-                {1,1,1,1}
+                {1,0,0,x},
+                {0,1,0,y},
+                {0,0,1,z},
+                {0,0,0,1}
         };
         return matrix;
     }
