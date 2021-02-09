@@ -24,7 +24,7 @@ public class Main {
         ViewPanel viewPanel = new ViewPanel(virtualCamera.getBufferedImage());
         window.add(viewPanel);
         window.addKeyListener(controller);
-        //window.show();
+        window.show();
 
 
         long start = System.currentTimeMillis();
