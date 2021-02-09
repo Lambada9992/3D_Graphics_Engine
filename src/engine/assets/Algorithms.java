@@ -5,9 +5,8 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Algorithms {
-    private static final int nThreads = 4;
     private static final Color bg_color = Color.WHITE;
-    private static final int numberOfThreads = 8;
+    private static final int numberOfThreads = 4;
 
     public static void facesNormalizationAndDeletion(Model3D model){
         ArrayList<Face3D> facesToAdd = new ArrayList<>();
@@ -125,7 +124,7 @@ public class Algorithms {
         facesAfterPerspectiveProjection.removeAll(facesToDelete);
 
     }
-    public static void drawImage(int width,int height,double distane,Graphics2D graphicsTool,
+    public static void drawImage(int width,int height,int scale,double distane,Graphics2D graphicsTool,
                                  ArrayList<Face3D> faces,ArrayList<Face3D> projectedFaces){
 
 
@@ -166,7 +165,6 @@ public class Algorithms {
                     threadIndex = index.get();
                     index.set(index.get()+1);
                 }
-                //////
 
                 int y = threadIndex/sqrtThreadAmount;
                 int x = threadIndex - y*sqrtThreadAmount;
@@ -198,7 +196,6 @@ public class Algorithms {
                     }
 
                 }
-
             }));
             threads.get(threadIterator).start();
         }
@@ -211,7 +208,6 @@ public class Algorithms {
             }
         }
 
-        //////////////////////
         for(int i = 0;i<image.length;i++){
             graphicsTool.setColor(bg_color);
             int previousJIndex = 0;
@@ -226,10 +222,14 @@ public class Algorithms {
                 if(j == 0){
                     graphicsTool.setColor(courentColor);
                 }else if(j==image[0].length-1){
-                    graphicsTool.drawLine(previousJIndex,i,j,i);
+                    for (int k = 0;k<scale;k++) {
+                        graphicsTool.drawLine(previousJIndex * scale, (i*scale)+k, j * scale, (i*scale)+k);
+                    }
                 } else {
                     if(courentColor!=graphicsTool.getColor()){
-                        graphicsTool.drawLine(previousJIndex,i,j-1,i);
+                        for (int k = 0;k<scale;k++) {
+                            graphicsTool.drawLine(previousJIndex * scale, (i * scale)+k, (j - 1) * scale, (i * scale)+k);
+                        }
                         previousJIndex = j;
                         graphicsTool.setColor(courentColor);
                     }
@@ -291,13 +291,17 @@ public class Algorithms {
         for(int i = 0;i<facesOnPixel.size();i++){
             int faceIndex = facesOnPixel.get(i);
             //normal vector of suface
-            double A = ((faces.get(faceIndex).points.get(1).y-faces.get(faceIndex).points.get(0).y)*(faces.get(faceIndex).points.get(2).z-faces.get(faceIndex).points.get(0).z))
-                    -((faces.get(faceIndex).points.get(1).z-faces.get(faceIndex).points.get(0).z)*(faces.get(faceIndex).points.get(2).y-faces.get(faceIndex).points.get(0).y));
-            double B =-1*(((faces.get(faceIndex).points.get(1).x-faces.get(faceIndex).points.get(0).x)*(faces.get(faceIndex).points.get(2).z-faces.get(faceIndex).points.get(0).z))
-                    -((faces.get(faceIndex).points.get(1).z-faces.get(faceIndex).points.get(0).z)*(faces.get(faceIndex).points.get(2).x-faces.get(faceIndex).points.get(0).x)));
-            double C = ((faces.get(faceIndex).points.get(1).x-faces.get(faceIndex).points.get(0).x)*(faces.get(faceIndex).points.get(2).y-faces.get(faceIndex).points.get(0).y))
-                    -((faces.get(faceIndex).points.get(1).y-faces.get(faceIndex).points.get(0).y)*(faces.get(faceIndex).points.get(2).x-faces.get(faceIndex).points.get(0).x));
+//            double A = ((faces.get(faceIndex).points.get(1).y-faces.get(faceIndex).points.get(0).y)*(faces.get(faceIndex).points.get(2).z-faces.get(faceIndex).points.get(0).z))
+//                    -((faces.get(faceIndex).points.get(1).z-faces.get(faceIndex).points.get(0).z)*(faces.get(faceIndex).points.get(2).y-faces.get(faceIndex).points.get(0).y));
+//            double B =-1*(((faces.get(faceIndex).points.get(1).x-faces.get(faceIndex).points.get(0).x)*(faces.get(faceIndex).points.get(2).z-faces.get(faceIndex).points.get(0).z))
+//                    -((faces.get(faceIndex).points.get(1).z-faces.get(faceIndex).points.get(0).z)*(faces.get(faceIndex).points.get(2).x-faces.get(faceIndex).points.get(0).x)));
+//            double C = ((faces.get(faceIndex).points.get(1).x-faces.get(faceIndex).points.get(0).x)*(faces.get(faceIndex).points.get(2).y-faces.get(faceIndex).points.get(0).y))
+//                    -((faces.get(faceIndex).points.get(1).y-faces.get(faceIndex).points.get(0).y)*(faces.get(faceIndex).points.get(2).x-faces.get(faceIndex).points.get(0).x));
 
+
+            double A = faces.get(faceIndex).getA();
+            double B = faces.get(faceIndex).getB();
+            double C = faces.get(faceIndex).getC();
             double T = (A*faces.get(faceIndex).points.get(0).x + B*faces.get(faceIndex).points.get(0).y + C*faces.get(faceIndex).points.get(0).z + C*z)
                     /(A*x + B*y + C*z);
 
@@ -305,18 +309,18 @@ public class Algorithms {
              double yCoordinate = y * T;
              double zCoordinate = -z + T*z;
 
-             //double distanceOfPoint = Math.pow(xCoordinate,2) + Math.pow(yCoordinate,2) + Math.pow(zCoordinate+z,2);
-            double distanceOfPoint = xCoordinate*xCoordinate + yCoordinate*yCoordinate + (T)*(T);
-
-
-             if(result==-1){
-                 distance = distanceOfPoint;
-                 result = faceIndex;
-             }else if(distanceOfPoint < distance){
-                 distance = distanceOfPoint;
-                 result = faceIndex;
-             }
-
+             //check perpendicular
+            if(!(0 == A*x + B*y + C*(-z)) ) {
+                //double distanceOfPoint = Math.pow(xCoordinate,2) + Math.pow(yCoordinate,2) + Math.pow(zCoordinate+z,2);
+                double distanceOfPoint = xCoordinate * xCoordinate + yCoordinate * yCoordinate + (T) * (T);
+                if (result == -1) {
+                    distance = distanceOfPoint;
+                    result = faceIndex;
+                } else if (distanceOfPoint < distance) {
+                    distance = distanceOfPoint;
+                    result = faceIndex;
+                }
+            }
 
 
         }

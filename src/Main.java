@@ -5,11 +5,10 @@ import gui.ViewPanel;
 import gui.Window;
 import controller.Controller;
 
-import java.awt.*;
-
 public class Main {
-    static final int Height = 800;
-    static final int Width = 800;
+    static final int Height = 400;
+    static final int Width = 400;
+    static final int Scale = 1;
     static final String Title = "Program";
 
     public static void main(String[] args) {
@@ -17,29 +16,29 @@ public class Main {
         Scene scene = new Scene();
         ModelsLoader.loadModels(scene,"files_to_load.txt");
 
+        VirtualCamera virtualCamera = new VirtualCamera(scene,Width,Height,Scale);
 
-        VirtualCamera virtualCamera = new VirtualCamera(scene,Height,Width);
+        Controller controller = new Controller(virtualCamera, 10.0d,Math.PI/32.0d);
 
-        Controller controller = new Controller(virtualCamera, 10.0d,Math.PI/32);
-        //
-
-
-        Window window = new Window(Title);
+        Window window = new Window(Title,Width*Scale,Height*Scale);
         ViewPanel viewPanel = new ViewPanel(virtualCamera.getBufferedImage());
         window.add(viewPanel);
         window.addKeyListener(controller);
-        //window.pack();
-        //window.setSize(Width+50,Height+50);
-        window.show();
+        //window.show();
 
 
+        long start = System.currentTimeMillis();
+        int fps_counter=0;
         while (true){
-            long start = System.currentTimeMillis();
-
             virtualCamera.update();
             viewPanel.repaint();
-
-            System.out.println("Time: "+(System.currentTimeMillis()-start)+ " ms");
+            if(System.currentTimeMillis()-start<1000){
+                fps_counter++;
+            }else{
+                System.out.println(fps_counter + " fps");
+                start = System.currentTimeMillis();
+                fps_counter = 0;
+            }
         }
 
     }

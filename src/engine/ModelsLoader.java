@@ -23,7 +23,7 @@ public class ModelsLoader{
                 for(int i = 1;i<stringArray.length;i++){
                     face.addPoint(new Point3D(vertices.get(Integer.parseInt(stringArray[i].split("/")[0])-1)));
                 }
-                face.getColor();//TODO to delete random face color | FACE COLOR
+                face.getColor();//random face collor
                 faces.add(face);
                 break;
             case "e":

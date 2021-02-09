@@ -10,6 +10,54 @@ public class Face3D {
     Color color = null;
     ArrayList<Point3D> points = new ArrayList<>();
 
+    //normal vector of surface
+    Object abcCalculationFlag = new Object();
+    boolean isABCSet = false;
+    Double a,b,c;
+
+    private void setABC(){
+
+        a = ((points.get(1).y-points.get(0).y)*(points.get(2).z-points.get(0).z))
+                -((points.get(1).z-points.get(0).z)*(points.get(2).y-points.get(0).y));
+        b =-1*(((points.get(1).x-points.get(0).x)*(points.get(2).z-points.get(0).z))
+                -((points.get(1).z-points.get(0).z)*(points.get(2).x-points.get(0).x)));
+        c = ((points.get(1).x-points.get(0).x)*(points.get(2).y-points.get(0).y))
+                -((points.get(1).y-points.get(0).y)*(points.get(2).x-points.get(0).x));
+    }
+
+    public double getA(){
+        if(!isABCSet)
+        {
+            synchronized (abcCalculationFlag){
+                this.setABC();
+                this.isABCSet = true;
+            }
+        }
+        return a;
+    }
+
+    public double getB(){
+        if(!isABCSet)
+        {
+            synchronized (abcCalculationFlag){
+                this.setABC();
+                this.isABCSet = true;
+            }
+        }
+        return b;
+    }
+
+    public double getC(){
+        if(!isABCSet)
+        {
+            synchronized (abcCalculationFlag){
+                this.setABC();
+                this.isABCSet = true;
+            }
+        }
+        return c;
+    }
+
     public Color getColor(){
         if(color==null){
             Random rand = new Random();

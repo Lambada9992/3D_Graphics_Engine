@@ -5,7 +5,6 @@ import engine.assets.Face3D;
 import engine.assets.Matrix;
 import engine.assets.Model3D;
 
-import javax.xml.crypto.dom.DOMCryptoContext;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -13,17 +12,18 @@ import java.util.ArrayList;
 public class VirtualCamera {
     Scene scene;
     Matrix matrix = new Matrix(Matrix.identityMatrix());
-    Double distance = new Double(400);
-    int width,height;
+    Double distance = new Double(200);
+    int width,height,scale;
 
     BufferedImage bufferedImage;
     Graphics2D graphicTool;
 
-    public VirtualCamera(Scene scene,int width,int height) {
+    public VirtualCamera(Scene scene,int width,int height,int scale) {
         this.scene = scene;
         this.width = width;
         this.height = height;
-        bufferedImage = new BufferedImage(800,800,BufferedImage.TYPE_INT_RGB);
+        this.scale=scale;
+        bufferedImage = new BufferedImage(width*scale,height*scale,BufferedImage.TYPE_INT_RGB);
         graphicTool = (Graphics2D) bufferedImage.getGraphics();
     }
 
@@ -45,9 +45,6 @@ public class VirtualCamera {
             distanceCopy = new Double(distance);
         }
 
-
-
-
         for(Model3D model : models){
             model.multiplyByMatrix(matrixCopy,null);
             Algorithms.facesNormalizationAndDeletion(model);
@@ -56,21 +53,11 @@ public class VirtualCamera {
             facesAfterPerspectiveProjection.addAll(model.copyFaces());
         }
 
-
         //usuwanie z poza ekranu
         Algorithms.facesOnView(width,height,faces,facesAfterPerspectiveProjection);
 
-
         //rysowanie
-        long start = System.currentTimeMillis();
-        Algorithms.drawImage(width,height,distanceCopy,graphicTool,faces,facesAfterPerspectiveProjection);
-        System.out.println('\t' + "Image drawing time: " +(System.currentTimeMillis()-start));
-
-        //TODO to delete rotation of model
-//        matrix.setMatrix(Matrix.multiply(Matrix.translationMatrix(0,0,-2000),matrix.getMatrix()));
-//        matrix.setMatrix(Matrix.multiply(Matrix.rotationYMatrix(Math.PI/16),matrix.getMatrix()));
-//        matrix.setMatrix(Matrix.multiply(Matrix.rotationXMatrix(Math.PI/16),matrix.getMatrix()));
-//        matrix.setMatrix(Matrix.multiply(Matrix.translationMatrix(0,0,2000),matrix.getMatrix()));
+        Algorithms.drawImage(width,height,scale,distanceCopy,graphicTool,faces,facesAfterPerspectiveProjection);
 
     }
 

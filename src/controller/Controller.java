@@ -23,74 +23,74 @@ public class Controller implements KeyListener {
     @Override
     public void keyTyped(KeyEvent e) {
         switch (e.getKeyChar()){
-            case 'w','W':
+            case 'w': case 'W':
                 synchronized (matrix){
                     matrix.setMatrix(Matrix.multiply(Matrix.translationMatrix(0,0,-step),matrix.getMatrix()));
                 }
                 break;
-            case 's','S':
+            case 's': case 'S':
                 synchronized (matrix){
                     matrix.setMatrix(Matrix.multiply(Matrix.translationMatrix(0,0,step),matrix.getMatrix()));
                 }
                 break;
-            case 'a','A':
+            case 'a': case 'A':
                 synchronized (matrix){
                     matrix.setMatrix(Matrix.multiply(Matrix.translationMatrix(step,0,0),matrix.getMatrix()));
                 }
                 break;
-            case 'd','D':
+            case 'd': case 'D':
                 synchronized (matrix){
                     matrix.setMatrix(Matrix.multiply(Matrix.translationMatrix(-step,0,0),matrix.getMatrix()));
                 }
                 break;
-            case 'q','Q':
+            case 'q': case 'Q':
                 synchronized (matrix){
                     matrix.setMatrix(Matrix.multiply(Matrix.translationMatrix(0,-step,0),matrix.getMatrix()));
                 }
                 break;
-            case 'e','E':
+            case 'e': case 'E':
                 synchronized (matrix){
                     matrix.setMatrix(Matrix.multiply(Matrix.translationMatrix(0,step,0),matrix.getMatrix()));
                 }
                 break;
-            case 'i','I':
+            case 'i': case 'I':
                 synchronized (matrix){
                     matrix.setMatrix(Matrix.multiply(Matrix.rotationXMatrix(-angle),matrix.getMatrix()));
                 }
                 break;
-            case 'k','K':
+            case 'k': case 'K':
                 synchronized (matrix){
                     matrix.setMatrix(Matrix.multiply(Matrix.rotationXMatrix(angle),matrix.getMatrix()));
                 }
                 break;
-            case 'j','J':
+            case 'j': case 'J':
                 synchronized (matrix){
                     matrix.setMatrix(Matrix.multiply(Matrix.rotationYMatrix(angle),matrix.getMatrix()));
                 }
                 break;
-            case 'l','L':
+            case 'l': case 'L':
                 synchronized (matrix){
                     matrix.setMatrix(Matrix.multiply(Matrix.rotationYMatrix(-angle),matrix.getMatrix()));
                 }
                 break;
-            case 'u','U':
+            case 'u': case 'U':
                 synchronized (matrix){
                     matrix.setMatrix(Matrix.multiply(Matrix.rotationZMatrix(angle),matrix.getMatrix()));
                 }
                 break;
-            case 'o','O':
+            case 'o': case 'O':
                 synchronized (matrix){
                     matrix.setMatrix(Matrix.multiply(Matrix.rotationZMatrix(-angle),matrix.getMatrix()));
                 }
                 break;
-            case 't','T':
+            case 't': case 'T':
                 synchronized (virtualCamera.getDistance()) {
                     if (virtualCamera.getDistance() - step > 0) {
                         virtualCamera.setDistance(virtualCamera.getDistance()-step);
                     }
                 }
                 break;
-            case 'g','G':
+            case 'g': case 'G':
                 synchronized (virtualCamera.getDistance()) {
                     virtualCamera.setDistance(virtualCamera.getDistance()+step);
                 }
