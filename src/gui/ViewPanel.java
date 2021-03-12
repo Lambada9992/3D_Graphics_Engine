@@ -9,7 +9,7 @@ public class ViewPanel extends JPanel {
 
     public ViewPanel(BufferedImage graphic) {
         this.graphic = graphic;
-        this.setSize(graphic.getWidth(),graphic.getHeight());
+        this.setPreferredSize(new Dimension(graphic.getWidth(),graphic.getHeight()));
         this.setVisible(true);
     }
 
@@ -19,4 +19,5 @@ public class ViewPanel extends JPanel {
         setBackground(Color.BLUE);
         g.drawImage(graphic,0,0,this);
     }
+
 }

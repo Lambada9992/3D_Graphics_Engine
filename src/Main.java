@@ -2,8 +2,9 @@ import engine.ModelsLoader;
 import engine.Scene;
 import engine.VirtualCamera;
 import gui.ViewPanel;
-import gui.Window;
 import controller.Controller;
+
+import javax.swing.*;
 
 public class Main {
     static final int Height = 400;
@@ -20,9 +21,12 @@ public class Main {
 
         Controller controller = new Controller(virtualCamera, 10.0d,Math.PI/32.0d);
 
-        Window window = new Window(Title,Width*Scale,Height*Scale);
+        JFrame window = new JFrame(Title);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ViewPanel viewPanel = new ViewPanel(virtualCamera.getBufferedImage());
         window.add(viewPanel);
+        window.pack();
+        window.setResizable(false);
         window.addKeyListener(controller);
         window.show();
 
